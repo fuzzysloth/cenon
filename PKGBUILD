@@ -1,4 +1,3 @@
-# Maintainer: Kyle Keen <keenerd@gmail.com>
 pkgname=cenon
 pkgver=4.0.2
 _libver=4.0.0
