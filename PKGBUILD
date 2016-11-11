@@ -39,11 +39,7 @@ build() {
 package() {
   cd "$srcdir/Cenon"
   install -d "$pkgdir/usr/lib/GNUstep/Libraries/"
-  #install -d "$pkgdir/usr/share/"
-  # TODO: symlink to .desktop file
-  #install -d "$pkgdir/usr/share/applications/"
-  # TODO: symlink to documentation
-  #install -d "$pkgdir/usr/share/doc/cenon/"
+  install -d "$pkgdir/usr/share/"
 
   make DESTDIR="$pkgdir" install
 
@@ -53,6 +49,12 @@ package() {
   cp -R Projects/ "$pkgdir/usr/lib/GNUstep/Cenon/"
   cp -R Documentation/ "$pkgdir/usr/lib/GNUstep/Cenon/"
   install ../../Cenon-4.0_gb.pdf "$pkgdir/usr/lib/GNUstep/Cenon/Documentation/"
+
+  install -d "$pkgdir/usr/share/applications/"
+  desktop_file="/usr/lib/GNUstep/Applications/Cenon.app/Resources/Cenon.desktop"
+  test -f "$pkgdir/$desktop_file" && ln -s "$desktop_file" "$pkgdir/usr/share/applications/"
+
+  # TODO: symlink to documentation
 
   # figure out how to fix the library path for real
   #touch "$pkgdir/usr/bin/cenon"
