@@ -33,32 +33,26 @@ build() {
   export CFLAGS="$CFLAGS -g"
   export CXXFLAGS="$CXXFLAGS -g"
 
-  make GNUSTEP_MAKEFILES="/usr/share/GNUstep/Makefiles/" \
-       GNUSTEP_LOCAL_LIBRARY="/usr/lib/GNUstep/Libraries/" \
-       GNUSTEP_LOCAL_APPS="/usr/share/"
+  make
 }
 
 package() {
   cd "$srcdir/Cenon"
   install -d "$pkgdir/usr/lib/GNUstep/Libraries/"
-  install -d "$pkgdir/usr/share/"
-  sed -i 's/chmod/#&/' GNUmakefile.postamble
-  sed -i 's/cp/#&/' GNUmakefile.postamble
-  make DESTDIR="$pkgdir" \
-       GNUSTEP_MAKEFILES="/usr/share/GNUstep/Makefiles/" \
-       GNUSTEP_LOCAL_LIBRARY="$pkgdir/usr/lib/GNUstep/Libraries/" \
-       GNUSTEP_LOCAL_APPS="/usr/share/" \
-       install
+  #install -d "$pkgdir/usr/share/"
+  # TODO: symlink to .desktop file
+  #install -d "$pkgdir/usr/share/applications/"
+  # TODO: symlink to documentation
+  #install -d "$pkgdir/usr/share/doc/cenon/"
 
-  chmod -R ugo+rX "$pkgdir"/usr/share/Cenon.*
+  make DESTDIR="$pkgdir" install
 
-  install -d "$pkgdir/usr/share/doc/cenon/"
-  # yeah, yeah.  use install
-  cp -R Devices/ "$pkgdir/usr/share/doc/cenon/"
-  cp -R Documentation/ "$pkgdir/usr/share/doc/cenon/"
-  cp -R Examples/ "$pkgdir/usr/share/doc/cenon/"
-  cp -R Projects/ "$pkgdir/usr/share/doc/cenon/"
-  cp ../../Cenon-4.0_gb.pdf "$pkgdir/usr/share/doc/cenon/Documentation/"
+  # TODO: prefer install over cp
+  cp -R Devices/ "$pkgdir/usr/lib/GNUstep/Cenon/"
+  cp -R Examples/ "$pkgdir/usr/lib/GNUstep/Cenon/"
+  cp -R Projects/ "$pkgdir/usr/lib/GNUstep/Cenon/"
+  cp -R Documentation/ "$pkgdir/usr/lib/GNUstep/Cenon/"
+  install ../../Cenon-4.0_gb.pdf "$pkgdir/usr/lib/GNUstep/Cenon/Documentation/"
 
   # figure out how to fix the library path for real
   #touch "$pkgdir/usr/bin/cenon"
